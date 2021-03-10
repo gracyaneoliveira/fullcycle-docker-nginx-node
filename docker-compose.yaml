@@ -32,11 +32,14 @@ services:
         build:
             context: nginx
         container_name: nginx
+        entrypoint: dockerize -wait tcp://node:3000 -timeout 20s /docker-entrypoint.sh nginx -g 'daemon off;'
         networks:
             - node-network
         tty: true
         ports:
             - "8080:80"
+        depends_on:
+            - node
 networks:
     node-network:
         driver: bridge
